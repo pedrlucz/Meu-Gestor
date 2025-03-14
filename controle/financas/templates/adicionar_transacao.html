@@ -1,0 +1,18 @@
+<!-- adicionar_transacao.html -->
+
+<h1>Adicionar Transação</h1>
+{% if user.is_authenticated %}
+    <p>Bem-vindo, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
+{% else %}
+    <a href="{% url 'login' %}">Entrar</a>
+{% endif %}
+<a href="{% url 'logout' %}">Sair</a>
+<form method = 'post'>
+
+    {% csrf_token %}  <!-- Token de segurança do Django, obrigatório em formulários Django para proteção contra ataques CSRF. -->
+    {{form.as_p}} <!-- Renderiza o formulário como parágrafos -->
+    <button type = 'submit'> Salvar </button>
+
+</form> 
+
+    <a href = "{% url 'lista_transacoes' %}"> Voltar para a lista </a>
