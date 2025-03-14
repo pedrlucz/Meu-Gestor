@@ -57,16 +57,50 @@ form{
     transition: .6s ease-in-out 1.2s, visibility 0s 1s;
 }
 
-    .container.active .form-box{
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    transition: all 0.6s ease-in-out;
+  }
+  
+  .toggle-left {
+    left: 0;
+    background: linear-gradient(90deg, #6C63FF 50%, transparent 50%);
+  }
+  
+  .toggle-right {
+    right: 0;
+    background: linear-gradient(90deg, transparent 50%, #6C63FF 50%);
+  }
+
+.container.active .form-box{
         right: 50px;
     }
 
-    .form-box.register{
-        visibility: hidden;
+.form-box.register{
+        position: absolute;
+        opacity: 0;
+        pointer-events: none; /* impede interação quando invisível */
+        transition: all 0.6s ease-in-out;
     }
-        .container.active .form-box.register{
-                                                visibility: visible;
+    
+.container.active .form-box.register{
+    opacity: 1;
+    pointer-events: auto;
                                                                         }
+
+/* esconde o formulário de login quando o container está "active" */
+.container.active .form-box.login {
+    opacity: 0;
+    pointer-events: none;
+  }
+
 
 .input-box{
                 position: relative;
