@@ -1,0 +1,26 @@
+<h2> Minhas transações </h2>
+
+<table border = "1">
+    <thread>
+        <tr>
+            <th> Descrição </th>
+            <th> Valor </th>
+            <th> Data </th>
+        </tr>
+    </thread>
+    <tbody>
+        {% for transacao in transacoes %}
+        <tr>
+            <td> {{ transacao.descricao }} </td>
+            <td> R$ {{ transacao.valor }} </td>
+            <td> {{ transacao.data }} </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan=" 3 "> Nenhuma transação encontrada </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href = "{% url 'adicionar_transacao' %}"> Adicionar Nova Transação </a>
