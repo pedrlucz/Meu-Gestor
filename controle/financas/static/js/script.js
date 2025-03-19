@@ -1,13 +1,16 @@
-const container = document.querySelector('.container');
-const registerBtn = document.querySelector('.register-btn');
-const loginBtn = document.querySelector('.login-btn');
 
-// Alternar para a tela de registro
-registerBtn.addEventListener('click', () => {
-    container.classList.add('active');  // Adiciona a classe "active" para mostrar o formulário de registro
+var btnSignin = document.querySelector("#signin");
+var btnSignup = document.querySelector("#signup");
+
+var body = document.querySelector("body");
+
+
+btnSignin.addEventListener("click", function () {
+   body.className = "sign-in-js"; 
 });
 
-// Alternar para a tela de login
-loginBtn.addEventListener('click', () => {
-    container.classList.remove('active');  // Remove a classe "active" para mostrar o formulário de login
-});
+btnSignup.addEventListener("click", function () {
+    body.className = "sign-up-js";
+})
+
+
