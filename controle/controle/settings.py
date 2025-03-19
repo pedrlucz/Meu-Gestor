@@ -78,6 +78,8 @@ WSGI_APPLICATION = 'controle.wsgi.application'
 
 load_dotenv()
 
+#teste
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
