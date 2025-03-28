@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout # verifica se as credenciais tão corretas, se sim o login cria o lgin e o logout...
+from django.contrib.auth.models import User # que guarda informação, como nome, email, senha
 from .models import Transacao, Categoria
 from .forms import TransacaoForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required # garante que só usuários autenticados vão conseguir entrar
+from django.contrib.auth.forms import UserCreationForm # importa um formulário pronto do django para a criação de novos usuários
 from django.contrib import messages
 
 def home(request):
@@ -22,7 +22,7 @@ def adicionar_transacao(request):
             transacao.save()
 
             # tem que ter o nome lista_transacoes lá na urls.pys
-            return redirect('lista_transacoes') # redireciona para lista de transações
+            return redirect('lista_transacoes') # redireciona o usuário para a pag lista de transações
         
     else:
         # se não foi enviado, exibe o formulário em branco
@@ -60,32 +60,36 @@ def lista_transacoes(request):
 
 def login_register(request):
     if request.method == 'POST':
-        if 'login' in request.POST:  # Usuário clicou em login
+        if 'login' in request.POST:  # usuário clicou em login
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Altere para a página desejada
+                return redirect('home')  # altere para a página desejada
+            
             else:
                 messages.error(request, 'Usuário ou senha inválidos.')
 
-        elif 'register' in request.POST:  # Usuário clicou em registro
+        elif 'register' in request.POST:  # usuário clicou em registro
             username = request.POST['username']
             email = request.POST['email']
             password = request.POST['password']
 
-            if User.objects.filter(username=username).exists():
+            # verifica o nome de usuário no db, se tiver um igual cai aqui 
+            if User.objects.filter(username = username).exists():
                 messages.error(request, 'Usuário já existe.')
+                
             else:
-                user = User.objects.create_user(username=username, email=email, password=password)
+                user = User.objects.create_user(username = username, email = email, password = password)
                 user.save()
                 messages.success(request, 'Conta criada com sucesso! Faça login.')
                 return redirect('login')
 
     return render(request, 'registration/login.html')
 
+# quando fizer o html do logout chamar aqui
 def user_logout(request):
     logout(request)
 
