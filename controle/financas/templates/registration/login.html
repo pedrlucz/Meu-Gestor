@@ -16,6 +16,14 @@
         <div class="login-card">
             <h2>Login</h2>
             
+            {% if messages %}
+                <div class="alert-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-warning">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             <form class="login-form">
                 <div class="form-group">
                     <label for="email">
