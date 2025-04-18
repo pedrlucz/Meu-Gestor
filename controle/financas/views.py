@@ -1,11 +1,15 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout # verifica se as credenciais tão corretas, se sim o login cria o lgin e o logout...
-from django.contrib.auth.models import User # que guarda informação, como nome, email, senha
-from .models import Transacao, Categoria
-from .forms import TransacaoForm
 from django.contrib.auth.decorators import login_required # garante que só usuários autenticados vão conseguir entrar
 from django.contrib.auth.forms import UserCreationForm # importa um formulário pronto do django para a criação de novos usuários
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User # que guarda informação, como nome, email, senha
+from .models import Transacao, Categoria
 from django.contrib import messages
+from .forms import TransacaoForm
+from django.urls import reverse
+
+
 
 def home(request):
     return render(request, 'home.html')
@@ -39,7 +43,7 @@ def lista_transacoes(request):
 
     transacoes = Transacao.objects.filter(usuario = request.user) # filtra apenas as transações do usuário logado
 
-    return render(request, 'controle/lista_transacoes.html', {'transacoes': transacoes})
+    return render(request, 'lista_transacoes.html', {'transacoes': transacoes})
 
 #def register(request):
 #    if request.method == 'POST':
@@ -60,59 +64,87 @@ def lista_transacoes(request):
 
 def login_register(request):
     if request.method == 'POST':
-        if 'login' in request.POST:  # usuário clicou em login
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
+        # 1) Pega email e senha do formulário
+        email    = request.POST.get('email')
+        password = request.POST.get('password')
 
-            if user is not None:
-                login(request, user)
-                return redirect('home')  # altere para a página desejada
-            
-            else:
-                messages.error(request, 'Usuário ou senha inválidos.')
+        # 2) Busca usuário pelo email
+        try:
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            user_obj = None
 
-        elif 'register' in request.POST:  # usuário clicou em registro
-            username = request.POST['username']
-            email = request.POST['email']
-            password = request.POST['password']
+        # 3) Se achou, autentica com o username real; senão, pula pra None
+        if user_obj:
+            user = authenticate(request,
+                                username=user_obj.username,
+                                password=password)
+        else:
+            user = None
 
-            # verifica o nome de usuário no db, se tiver um igual cai aqui 
-            if User.objects.filter(username = username).exists():
-                messages.error(request, 'Usuário já existe.')
-                
-            else:
-                user = User.objects.create_user(username = username, email = email, password = password)
-                user.save()
-                messages.success(request, 'Conta criada com sucesso! Faça login.')
-                return redirect('login')
+        # 4) Se autenticou, faz login e redireciona
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('home'))
 
+        # 5) Senão, erro e volta pro form de login
+        messages.error(request, "Usuário ou senha inválidos.")
+        return redirect('login')
+
+    # método GET — só renderiza o form
     return render(request, 'registration/login.html')
 
 # quando fizer o html do logout chamar aqui
 def user_logout(request):
     logout(request)
 
-    return redirect('login')  # redireciona para a página de login após o logout
+    return redirect('home')  # redireciona para a página de home após o logout
 
 def register_user(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        # pega dados e já tira espaços extras
+        username         = request.POST.get("username", "").strip()
+        email            = request.POST.get("email", "").strip()
+        password         = request.POST.get("password", "")
+        confirm_password = request.POST.get("confirm_password", "")
 
-        # Verifica se o usuário já existe
-        if User.objects.filter(username=username).exists():
+        # validações básicas de presença
+        if not username:
+            messages.error(request, "O nome de usuário é obrigatório.")
+            return redirect("register")
+
+        if not email:
+            messages.error(request, "Este campo é obrigatório.")
+            return redirect("register")
+
+        if not password:
+            messages.error(request, "A senha é obrigatória.")
+            return redirect("register")
+
+        if password != confirm_password:
+            messages.error(request, "As senhas não conferem.")
+            return redirect("register")
+
+        # valida se já existe username ou email
+        if User.objects.filter(username = username).exists():
             messages.error(request, "Este nome de usuário já está em uso.")
-            return redirect("login")
+            return redirect("register")
 
-        # Cria o usuário
-        user = User.objects.create_user(username=username, email=email, password=password)
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Este email já está cadastrado.")
+            return redirect("register")
+
+        # tudo ok, cria e faz login
+        user = User.objects.create_user(
+                                            username = username,
+                                                email = email,
+                                                    password = password
+                                                                            )
         user.save()
-
-        # Faz login automaticamente após o registro
         login(request, user)
-        return redirect("home")  # Redireciona para a página principal após o registro
+        next_url = request.GET.get('next', 'home')
+        messages.success(request, "Conta criada com sucesso! Bem-vindo(a).")
+        return redirect(next_url)
 
     return render(request, "registration/register.html")
 
