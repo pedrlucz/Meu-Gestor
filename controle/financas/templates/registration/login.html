@@ -1,90 +1,57 @@
 {% load static %}
 
-<!-- fazer ele resposnsiivo dos dois lados, e depois quando clicar para no registro ser redirecionado pra register-->
-
 <!DOCTYPE html>
-
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width-device-width, initial-scale=1.0">
-    <title>Login/Cadastro</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 </head>
 <body>
     <div class="container">
-        <!-- Formulário de Login - testando -->
-        <div class="form-box login">
-            <form action="{% url 'login' %}" method="POST">
-                {% csrf_token %}
-                <h1>Login</h1>
-                <div class="input-box">
-                    <input type="text" name="username" placeholder="Username" required>
-                    <i class='bx bxs-user'></i>
+        <div class="login-card">
+            <h2>Login</h2>
+            
+            <form class="login-form">
+                <div class="form-group">
+                    <label for="email">
+                        <i class="far fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Email">
+                    </label>
                 </div>
-                <div class="input-box">
-                    <input type="password" name="password" placeholder="Password" required>
-                    <i class='bx bx-lock-alt'></i>
+                
+                <div class="form-group">
+                    <label for="senha">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="senha" placeholder="Senha">
+                    </label>
                 </div>
-                <div class="forgot-link">
-                    <a href="#">Esqueceu sua senha?</a>
+                
+                <div class="form-options">
+                    <a href="#" class="forgot-password">Esqueceu sua senha?</a>
                 </div>
-                <button type="submit" class="btn">Login</button>
-                <p>ou login com outras plataformas sociais</p>
-                <div class="social-icons">
-                    <a href="#"><i class='bx bxl-google'></i></a>
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-github'></i></a>
-                    <a href="#"><i class='bx bxl-linkedin'></i></a>
-                </div>
+                
+                <button type="submit" class="btn-login">Entrar</button>
             </form>
-        </div>
-
-        <!-- Formulário de Registro -->
-        <div class="form-box register">
-            <form action="{% url 'register' %}" method="POST">
-                {% csrf_token %}
-                <h1>Registro</h1>
-                <div class="input-box">
-                    <input type="text" name="username" placeholder="Username" required>
-                    <i class='bx bxs-user'></i>
-                </div>
-                <div class="input-box">
-                    <input type="email" name="email" placeholder="Email" required>
-                    <i class='bx bxs-envelope'></i>
-                </div>
-                <div class="input-box">
-                    <input type="password" name="password" placeholder="Password" required>
-                    <i class='bx bxs-lock-alt'></i>
-                </div>
-                <button type="submit" class="btn">Registro</button>
-                <p>ou registrar com outras redes sociaiss</p>
+            
+            <div class="social-login">
+                <p>ou faça login com plataformas sociais</p>
                 <div class="social-icons">
-                    <a href="#"><i class='bx bxl-google'></i></a>
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-github'></i></a>
-                    <a href="#"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#"><i class="fab fa-google"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
                 </div>
-            </form>
-        </div>
-
-        <!-- Painéis de Alternância -->
-        <div class="toogle-box">
-            <div class="toogle-panel toogle-left">
-                <h1>Olá, Bem-vindo!</h1>
-                <p>Não tem conta?</p>
-                <button class="btn register-btn">Registro</button>
             </div>
-            <div class="toogle-panel toogle-right">
-                <h1>Bem-vindo de volta!</h1>
-                <p>Já tem uma conta?</p>
-                <button class="btn login-btn">Login</button>
+            
+            <div class="register-link">
+                <p>Não tem uma conta? <a href="{% url 'register' %}">Registre-se</a></p>
             </div>
         </div>
     </div>
-
-    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
