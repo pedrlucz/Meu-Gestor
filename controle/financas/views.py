@@ -9,8 +9,6 @@ from django.contrib import messages
 from .forms import TransacaoForm
 from django.urls import reverse
 
-
-
 def home(request):
     return render(request, 'home.html')
 
@@ -44,23 +42,6 @@ def lista_transacoes(request):
     transacoes = Transacao.objects.filter(usuario = request.user) # filtra apenas as transações do usuário logado
 
     return render(request, 'lista_transacoes.html', {'transacoes': transacoes})
-
-#def register(request):
-#    if request.method == 'POST':
-#        form = UserCreationForm(request.POST)
-        
-#        if form.is_valid():
-#            form.save()
-#            messages.success(request, 'Conta criada com sucesso!')
-#            return redirect('login') #redireciona para a pagina de login após o cadastro
-        
-#        else:
-#            messages.error(request, 'Erro ao criar a conta. Tente novamente.')
-    
-#    else:
-#        form = UserCreationForm()
-
-#    return render(request, 'registration/register.html', {'form': form})
 
 def login_register(request):
     if request.method == 'POST':
@@ -143,7 +124,7 @@ def register_user(request):
         user.save()
         login(request, user)
         next_url = request.GET.get('next', 'home')
-        messages.success(request, "Conta criada com sucesso! Bem-vindo(a).")
+        # messages.success(request, "Conta criada com sucesso! Bem-vindo(a).")
         return redirect(next_url)
 
     return render(request, "registration/register.html")
