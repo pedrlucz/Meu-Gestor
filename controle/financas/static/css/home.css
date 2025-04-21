@@ -1,0 +1,389 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800");
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body{
+
+    font-family: "Poppins", sans-serif;
+
+}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+h3{
+    font-size: 44px;
+    line-height: 55px;
+    color: #121212;
+    font-weight: 600;
+}
+
+h6{
+    font-size: 20px;
+    line-height: 32px;
+    color: #6c6c6c;
+    margin-top: 16px;
+    font-weight: normal;
+}
+
+
+/*==================== Nav ====================*/
+
+.nav{
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 6.5rem;
+    background: transparent;
+    transition: all 0.5s ease;
+    z-index: 100000;
+
+}
+
+.nav img {
+    width: 120px;
+    height: 120px;
+}
+
+.nav .navbar-toggler{
+    display: none;
+    border: none;
+    outline: none;
+
+}
+
+.nav .navbar-toggler .toggler-icon{
+    width: 27px;
+    height: 3px;
+    background-color: #121212;
+    margin: 5px 0;
+    position: relative;
+    display: block;
+    transition: all 0.3s ease-out 0s;
+    
+}
+
+.nav .menu-bar .menu-items{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.nav .menu-bar .menu-items li{
+    margin: 015px;
+}
+
+.nav .menu-bar .menu-items li a{
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.nav .menu-bar .menu-items li a:hover{
+   color: #488ee9; 
+}
+
+.nav .menu-bar .navbar-login{ 
+    display: flex;
+    flex: 1;
+}
+
+.navbar-login .btn{
+    padding: .75rem 1.5 rem;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    width: 105px;
+    height: 45px;
+    margin: 5px;
+}
+
+.sign_up{
+    color: var(--text-dark);
+    background-color: transparent;
+
+}
+
+.sign_in{
+    color: var(--White);
+    background-color: #488ee9;
+}
+
+.sign_up a{
+    color: #353434;
+    font-size: 17px;
+}
+
+.sign_in a {
+    color: #353434;   
+    font-size: 17px;
+}
+
+
+/*==================== Inicio ====================*/
+
+.back {
+    background-image: url(assets/images/6.jpg);
+    width: 100%;
+    height: 120vh;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+}
+
+.back .overlay{
+    background-image: linear-gradient(rgba(232,237,255,0.9), rgba(239,254,255,0.9) 40%, rgba(254,255,244,0.3) 70%, rgba(255, 255, 255, 0.12));
+    width: 100%;
+    height: 100%;
+}
+
+.back .hero-shape{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.back .hero-shape img{
+    width: 100%;
+    display: block;
+}
+
+.hero-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+}
+
+.hero-text h6{
+    color: #1d1d1d;
+}
+
+/*==================== Serviço ====================*/
+
+#wrapper{
+    margin: 5rem 7rem 10rem 7rem;
+}
+
+.service{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.service h6{
+    margin-bottom: 6rem;
+}
+
+.service .service-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service .service-content .box{
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service .service-content .box .box-one{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.service .service-content .box .box-one .services{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.service .service-content .box .box-one .services i{
+   font-size: 3rem;
+   margin-bottom: 10px;
+   color: #488ee9;
+}
+
+.service .service-content .box .box-one .services .service-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: justify;
+}
+
+.service .service-content .service-img{
+    width: 45%;
+}
+
+.service .service-content .service-img img{
+    width: 100%;
+}
+
+/*==================== Valores ====================*/
+
+.pricing{
+    display: block;
+    text-align: center;
+}
+
+.pricing h6{
+    margin-bottom: 6rem;
+}
+
+.pricing .table{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pricing .basic{
+    width: 355px;
+    height: 100%;
+    border: 1px solid #488ee9;
+    border-radius: 20px;
+}
+
+.pricing .basic h3{
+    text-align: center;
+    font-weight: 300;
+    padding: 40px 0;
+    background-color: #ecf0f1;
+    transition: all ease 0.6s;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+}
+
+.pricing .basic:hover h3{
+    background-image: linear-gradient(to right, #488ee9, #af61eb);
+    color: #fff;
+}
+
+.pricing .standard h3{
+    background-image: linear-gradient(to right, #488ee9, #af61eb);
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    color: #fff;
+}
+
+.pricing .basic .price{
+    display: block;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.pricing .basic .price .sing{
+    display: inline-block;
+    font-size: 28px;
+    font-weight: 400;
+    vertical-align: middle;
+}
+
+.pricing .basic .price .currency{
+    font-size: 60px;
+    font-weight: 300;
+    letter-spacing: -2px;
+    line-height: 60px;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.pricing .basic .price .cent{
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 400;
+    vertical-align: bottom;
+}
+
+.pricing .basic .price .month{
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    vertical-align: bottom;
+}
+
+.pricing .basic ul li{
+    border-top: 1px solid #ccc;
+    padding: 18px 0;
+    border-bottom: 1px solid #ccc;
+    color: #7f8c8d;
+}
+
+.pricing .basic ul li i{
+    padding-right: 5px;
+    color: #488ee9;
+}
+
+.pricing .header-btn{
+    margin: 2rem auto;
+    width: 170px;
+}
+
+.pricing  .main-btn{
+    display: inline-block;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 2px solid transparent;
+    padding: 0 32px;
+    font-size: 16px;
+    line-height: 48px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s ease-out 0s;
+}
+
+.pricing .header-btn a{
+    font-weight: normal;
+    font-size: 18px;
+    border-radius: 50px;
+    outline: medium none;
+    border: 1px solid #2ecc71;
+    color:#1d1d1d;
+}
+
+.pricing .basic:hover .header-btn a{
+    background-image: linear-gradient(to right, #488ee9, #af61eb);
+    color: #fff;
+    border: 1px solid #2ecc71;
+}
+
+.pricing .standard .header-btn a{
+    background-image: linear-gradient(to right, #488ee9, #af61eb);
+    color: #fff;
+    border: 1px solid #2ecc71;
+}
