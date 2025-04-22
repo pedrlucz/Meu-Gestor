@@ -20,3 +20,8 @@ class TransacaoForm(forms.ModelForm): # modelform cria automaticamente um formul
         # ta ligado à transação
         model = Transacao
         fields = ['tipo', 'valor', 'descricao', 'categoria']
+
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = ['nome']
