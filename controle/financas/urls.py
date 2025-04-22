@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import adicionar_transacao, lista_transacoes, home, login_register, user_logout, register_user, dashboard
+from .views import adicionar_transacao, lista_transacoes, home, login_register, user_logout, register_user, dashboard, cadastrar_categoria
 from . import views
 
 urlpatterns = [
@@ -9,5 +9,6 @@ urlpatterns = [
     path('login/', login_register, name = 'login'),
     path('logout/', user_logout, {'next_page':'login'}, name = 'logout'),
     path('dashboard/', dashboard, name='dashboard'),
+    path('categorias/cadastrar/', cadastrar_categoria, name='cadastrar_categoria'),
     path('', home, name = 'home')
 ]
