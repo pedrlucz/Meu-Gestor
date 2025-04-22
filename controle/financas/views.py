@@ -2,14 +2,15 @@ from django.contrib.auth import authenticate, login, logout # verifica se as cre
 from django.contrib.auth.decorators import login_required # garante que só usuários autenticados vão conseguir entrar
 from django.contrib.auth.forms import UserCreationForm # importa um formulário pronto do django para a criação de novos usuários
 from django.db.models.functions import TruncMonth
+from .forms import TransacaoForm, CategoriaForm
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User # que guarda informação, como nome, email, senha
-from .models import Transacao, Categoria
 from django.contrib import messages
 from django.db.models import Sum
-from .forms import TransacaoForm
-from django.urls import reverse
+from .models import Transacao
+
+# from django.http import HttpResponseRedirect
+# from django.urls import reverse
 
 def home(request):
     return render(request, 'home.html')
@@ -139,6 +140,8 @@ def dashboard(request):
     
     total_despesas = Transacao.objects.filter(usuario = request.user, tipo = 'D') \
         .aggregate(Sum('valor'))['valor__sum'] or 0
+    
+    resultado = total_receitas - total_despesas
 
     # vai ser a série mensal de receitas (para o gráfico)
     series = (
@@ -149,15 +152,51 @@ def dashboard(request):
                     .order_by('mes')
                                                                                     )
 
+    series_despesas = (
+        Transacao.objects.filter(usuario = request.user, tipo = 'D')
+        .annotate(mes = TruncMonth('data'))
+        .values('mes')
+        .annotate(total = Sum('valor'))
+        .order_by('mes')
+    )
+
     meses = [item['mes'].strftime('%b') for item in series]
     valores = [float(item['total']) for item in series]
+
+    # dados mensais
+    valores_despesas = [float(item['total']) for item in series_despesas]
+
+    # ajustar resultado mensalmente
+    valores_resultado = [
+        r - d if i < len(valores_despesas) else r
+        for i, (r, d) in enumerate(zip(valores, valores_despesas))
+    ]
 
     context = {
                     'total_receitas': total_receitas,
                         'total_despesas': total_despesas,
                             'meses': meses,
                                 'valores': valores,
+                                    'resultado': resultado,
+                                        'valores_despesas': valores_despesas,
+                                            'valores_resultado': valores_resultado
                                                             }
 
     return render(request, 'dashboard.html', context)
 
+@login_required
+def cadastrar_categoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+
+        if form.is_valid():
+            categoria = form.save(commit = False)
+            categoria.usuario = request.user
+            categoria.save()
+            
+            return redirect('adicionar_transacao')
+        
+    else:
+        form = CategoriaForm()
+
+    return render(request, 'categorias/cadastrar.html', {'form': form})
