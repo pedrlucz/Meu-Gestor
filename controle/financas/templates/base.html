@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Meu App Financeiro{% endblock %}</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- o chart.js aqui -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+
+  <!-- navbar -->
+  <nav class="bg-gray-800 p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="{% url 'home' %}" class="text-xl font-bold">MinhaFinanças</a>
+      <div class="space-x-2">
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="px-3 py-2 hover:bg-gray-700 rounded">Dashboard</a>
+          <a href="{% url 'lista_transacoes' %}" class="px-3 py-2 hover:bg-gray-700 rounded">Transações</a>
+          <a href="{% url 'logout' %}" class="px-3 py-2 hover:bg-gray-700 rounded">Sair</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="px-3 py-2 hover:bg-gray-700 rounded">Login</a>
+          <a href="{% url 'register' %}" class="px-3 py-2 hover:bg-gray-700 rounded">Cadastrar</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mx-auto p-6">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
