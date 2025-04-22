@@ -4,7 +4,7 @@
 {% block content %}
 <div class="max-w-7xl mx-auto p-6 space-y-6">
 
-  <!-- Cards de totais -->
+  <!-- cards dos totais -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     <div class="bg-gray-800 p-4 rounded-lg shadow">
       <h2 class="text-sm text-gray-400">Receitas Totais</h2>
@@ -14,27 +14,34 @@
       <h2 class="text-sm text-gray-400">Despesas Totais</h2>
       <p class="text-3xl font-bold">R$ {{ total_despesas|floatformat:2 }}</p>
     </div>
+    <div class="bg-gray-800 p-4 rounded-lg shadow">
+      <h2 class="text-sm text-gray-400">Receita Bruta</h2>
+      <p class="text-3xl font-bold">R$ {{ resultado|floatformat:2 }}</p>
+    </div>
   </div>
 
-  <!-- Gráfico de linhas -->
+  <!-- gráfico das linhas -->
   <div class="bg-gray-800 p-6 rounded-lg shadow">
     <canvas id="lineChart"></canvas>
   </div>
 
-  {# ─── aqui adicionamos os scripts de dados ─── #}
+  {# ─── aqui vem os scripts de dados ─── #}
   {{ meses|json_script:"meses-data" }}
   {{ valores|json_script:"valores-data" }}
+  {{ valores_despesas|json_script:"valores-despesas" }}
+  {{ valores_resultado|json_script:"valores-resultado" }}
+
 </div>
 {% endblock %}
 
 
 {% block extra_scripts %}
 <script>
-  // Recupera o JSON que o django outputou com json_script
+  // tecupera o JSON que o django outputou com json_script
   const meses   = JSON.parse(document.getElementById('meses-data').textContent);
   const valores = JSON.parse(document.getElementById('valores-data').textContent);
 
-  // Inicializa o Chart.js
+  // inicia Chart.js
   new Chart(
     document.getElementById('lineChart'),
     {
@@ -47,7 +54,23 @@
           tension: 0.3,
           borderWidth: 2,
           borderColor: 'orange'
-        }]
+        }, 
+        {
+          label: 'Despesa Mensal',
+          data: valores_despesas,
+          borderColor: 'red',
+          tension: 0.3,
+          borderWidth: 2
+        },
+        {
+          label: 'Resultado (Lucro)',
+          data: valores_resultado,
+          borderColor: 'green',
+          borderDash: [5,5],
+          tension: 0.3,
+          borderWidth: 2
+        }
+      ]
       },
       options: {
         scales: {
