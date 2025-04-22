@@ -1,11 +1,13 @@
 from django.contrib.auth import authenticate, login, logout # verifica se as credenciais tão corretas, se sim o login cria o lgin e o logout...
 from django.contrib.auth.decorators import login_required # garante que só usuários autenticados vão conseguir entrar
 from django.contrib.auth.forms import UserCreationForm # importa um formulário pronto do django para a criação de novos usuários
+from django.db.models.functions import TruncMonth
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User # que guarda informação, como nome, email, senha
 from .models import Transacao, Categoria
 from django.contrib import messages
+from django.db.models import Sum
 from .forms import TransacaoForm
 from django.urls import reverse
 
@@ -66,7 +68,7 @@ def login_register(request):
         # 4) Se autenticou, faz login e redireciona
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse('home'))
+            return redirect('dashboard')
 
         # 5) Senão, erro e volta pro form de login
         messages.error(request, "Usuário ou senha inválidos.")
@@ -111,7 +113,7 @@ def register_user(request):
             messages.error(request, "Este nome de usuário já está em uso.")
             return redirect("register")
 
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(email = email).exists():
             messages.error(request, "Este email já está cadastrado.")
             return redirect("register")
 
@@ -123,9 +125,39 @@ def register_user(request):
                                                                             )
         user.save()
         login(request, user)
-        next_url = request.GET.get('next', 'home')
+        # next_url = request.GET.get('next', 'home')
         # messages.success(request, "Conta criada com sucesso! Bem-vindo(a).")
-        return redirect(next_url)
+        return redirect('dashboard')
 
     return render(request, "registration/register.html")
+
+@login_required
+def dashboard(request):
+    # soma total de receitas e despesas do usuário
+    total_receitas = Transacao.objects.filter(usuario = request.user, tipo = 'R') \
+        .aggregate(Sum('valor'))['valor__sum'] or 0
+    
+    total_despesas = Transacao.objects.filter(usuario = request.user, tipo = 'D') \
+        .aggregate(Sum('valor'))['valor__sum'] or 0
+
+    # vai ser a série mensal de receitas (para o gráfico)
+    series = (
+                    Transacao.objects.filter(usuario = request.user, tipo = 'R')
+                    .annotate(mes = TruncMonth('data'))
+                    .values('mes')
+                    .annotate(total = Sum('valor'))
+                    .order_by('mes')
+                                                                                    )
+
+    meses = [item['mes'].strftime('%b') for item in series]
+    valores = [float(item['total']) for item in series]
+
+    context = {
+                    'total_receitas': total_receitas,
+                        'total_despesas': total_despesas,
+                            'meses': meses,
+                                'valores': valores,
+                                                            }
+
+    return render(request, 'dashboard.html', context)
 
