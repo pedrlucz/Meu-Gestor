@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login, logout # verifica se as credenciais tão corretas, se sim o login cria o lgin e o logout...
 from django.contrib.auth.decorators import login_required # garante que só usuários autenticados vão conseguir entrar
-from django.contrib.auth.forms import UserCreationForm # importa um formulário pronto do django para a criação de novos usuários
 from django.db.models.functions import TruncMonth
 from .forms import TransacaoForm, CategoriaForm
 from django.shortcuts import render, redirect
@@ -54,15 +53,15 @@ def login_register(request):
 
         # 2) Busca usuário pelo email
         try:
-            user_obj = User.objects.get(email=email)
+            user_obj = User.objects.get(email = email)
         except User.DoesNotExist:
             user_obj = None
 
         # 3) Se achou, autentica com o username real; senão, pula pra None
         if user_obj:
             user = authenticate(request,
-                                username=user_obj.username,
-                                password=password)
+                                username = user_obj.username,
+                                password = password)
         else:
             user = None
 
