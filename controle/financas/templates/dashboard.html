@@ -40,6 +40,8 @@
   // tecupera o JSON que o django outputou com json_script
   const meses   = JSON.parse(document.getElementById('meses-data').textContent);
   const valores = JSON.parse(document.getElementById('valores-data').textContent);
+  const valores_despesas  = JSON.parse(document.getElementById('valores-despesas').textContent);
+  const valores_resultado = JSON.parse(document.getElementById('valores-resultado').textContent);
 
   // inicia Chart.js
   new Chart(
