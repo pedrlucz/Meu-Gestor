@@ -1,55 +1,119 @@
-<!-- adicionar_transacao.html
-
-<h1>Adicionar Transação</h1>
-{% if user.is_authenticated %}
-    <p>Bem-vindo, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
-{% else %}
-    <a href="{% url 'login' %}">Entrar</a>
-{% endif %}
-<a href="{% url 'logout' %}">Sair</a>
-<form method = 'post'>
-
-    {% csrf_token %}  <!-- Token de segurança do Django, obrigatório em formulários Django para proteção contra ataques CSRF. -->
-    <!--{{form.as_p}}  Renderiza o formulário como parágrafos 
-    <button type = 'submit'> Salvar </button> -->
-
-<!-- </form> 
-
-    <a href="{% url 'cadastrar_categoria' %}">Cadastrar nova categoria</a>
-
-    <a href = "{% url 'lista_transacoes' %}"> Voltar para a lista </a> -->
-
-{% load static %} <!-- Carrega o static do Django -->
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Adicionar Transação</title>
-    <link rel="stylesheet" href="{% static 'css/add_transacoes.css' %}">
+  <meta charset="UTF-8">
+  <title>Adicionar Transação</title>
+  <link rel="stylesheet" href="{% static 'css/add_transacoes.css' %}">
+
+  <style>
+    /* Alinha checkbox e texto */
+    .inline-flex {
+      display: inline-flex;
+      align-items: center;
+    }
+    /* Espaçamento checkbox ↔ texto */
+    .inline-flex > input + span {
+      margin-left: 1rem; /* 16px */
+    }
+    /* Oculta o elemento */
+    .hidden {
+      display: none;
+    }
+    /* Espaçamento vertical entre grupos */
+    .form-group {
+      margin-bottom: 1.5rem; /* 24px */
+    }
+    /* Tamanho consistente pro checkbox */
+    input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+    }
+  </style>
 </head>
-<body>
+<body class="p-6 bg-gray-100">
 
-    <h1>Adicionar Transação</h1>
+  <h1>Adicionar Transação</h1>
 
-    {% if user.is_authenticated %}
-        <p>Bem-vindo, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
-    {% else %}
-        <p><a href="{% url 'login' %}">Entrar</a></p>
-    {% endif %}
+  {% if user.is_authenticated %}
+    <p>Bem-vindo, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
+  {% else %}
+    <p><a href="{% url 'login' %}">Entrar</a></p>
+  {% endif %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Salvar</button>
-    </form>
+  <form method="post" class="bg-white p-6 rounded shadow">
+    {% csrf_token %}
 
-    <hr>
+    <!-- Tipo (Receita / Despesa) -->
+    <div class="form-group">
+      <label for="{{ form.tipo.id_for_label }}">Tipo</label><br>
+      {{ form.tipo }}
+    </div>
 
-    <p>
-        <a href="{% url 'cadastrar_categoria' %}">Cadastrar nova categoria</a> |
-        <a href="{% url 'lista_transacoes' %}">Voltar para a lista</a>
-    </p>
+    <!-- Valor -->
+    <div class="form-group">
+      <label for="{{ form.valor.id_for_label }}">Valor</label><br>
+      {{ form.valor }}
+    </div>
+
+    <!-- Descrição -->
+    <div class="form-group">
+      <label for="{{ form.descricao.id_for_label }}">Descrição</label><br>
+      {{ form.descricao }}
+    </div>
+
+    <!-- Categoria -->
+    <div class="form-group">
+      <label for="{{ form.categoria.id_for_label }}">Categoria (opcional)</label><br>
+      {{ form.categoria }}
+    </div>
+
+    <!-- Recorrente? -->
+    <div class="form-group">
+      <label for="id_recorrente" class="inline-flex">
+        <input
+          type="checkbox"
+          name="recorrente"
+          id="id_recorrente"
+          {% if form.recorrente.value %}checked{% endif %}
+        >
+        <span>Marcar como recorrente</span>
+      </label>
+    </div>
+
+    <!-- Frequência (aparece só se recorrente estiver marcado) -->
+    <div id="freq-group" class="form-group hidden">
+      <label for="{{ form.frequencia.id_for_label }}">Frequência</label><br>
+      {{ form.frequencia }}
+    </div>
+
+    <!-- Botão de salvar -->
+    <div class="form-group">
+      <button type="submit">
+        Salvar
+      </button>
+    </div>
+  </form>
+
+  <hr>
+
+  <p>
+    <a href="{% url 'cadastrar_categoria' %}">Cadastrar nova categoria</a>
+    |
+    <a href="{% url 'lista_transacoes' %}">Voltar para a lista</a>
+  </p>
+
+  <script>
+    const chk = document.getElementById("id_recorrente");
+    const grp = document.getElementById("freq-group");
+
+    function toggleFreq() {
+      grp.classList.toggle("hidden", !chk.checked);
+    }
+
+    toggleFreq(); // ao carregar
+    chk.addEventListener("change", toggleFreq); // ao clicar
+  </script>
 
 </body>
 </html>
