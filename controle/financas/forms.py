@@ -19,7 +19,16 @@ class TransacaoForm(forms.ModelForm): # modelform cria automaticamente um formul
     class Meta:
         # ta ligado à transação
         model = Transacao
-        fields = ['tipo', 'valor', 'descricao', 'categoria']
+        fields = ['tipo', 'valor', 'descricao', 'categoria', 'recorrente', 'frequencia']
+        
+        widgets = {
+            'tipo':       forms.Select(attrs={'class': 'w-full bg-gray-700 text-white p-2 rounded'}),
+            'valor':      forms.NumberInput(attrs={'class': 'w-full bg-gray-700 text-white p-2 rounded'}),
+            'descricao':  forms.TextInput(attrs={'class': 'w-full bg-gray-700 text-white p-2 rounded'}),
+            'categoria':  forms.Select(attrs={'class': 'w-full bg-gray-700 text-white p-2 rounded'}),
+            'recorrente': forms.CheckboxInput(attrs={'class': 'h-5 w-5 text-indigo-500'}),
+            'frequencia': forms.Select(attrs={'class': 'w-full bg-gray-700 text-white p-2 rounded'}),
+        }
 
 class CategoriaForm(forms.ModelForm):
     class Meta:

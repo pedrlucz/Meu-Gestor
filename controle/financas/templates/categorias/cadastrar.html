@@ -1,11 +1,67 @@
-<h2>Cadastrar Categoria</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Adicionar Transação</title>
+  <link rel="stylesheet" href="{% static 'css/add_transacoes.css' %}">
 
-<form method="post">
+  <style>
+    /* Alinha checkbox e texto */
+    .inline-flex {
+      display: inline-flex;
+      align-items: center;
+    }
+    /* Espaçamento checkbox ↔ texto */
+    .inline-flex > input + span {
+      margin-left: 1rem; /* 16px */
+    }
+    /* Oculta o elemento */
+    .hidden {
+      display: none;
+    }
+    /* Espaçamento vertical entre grupos */
+    .form-group {
+      margin-bottom: 1.5rem; /* 24px */
+    }
+    /* Tamanho consistente pro checkbox */
+    input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+    }
+  </style>
+</head>
+<body class="p-6 bg-gray-100">
+
+  <h1>Adicionar Categoria</h1>
+
+  <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
     <button type="submit">Salvar</button>
 </form>
 
-<a href="{% url 'adicionar_transacao' %}">- Adicionar Transação -</a>
+  <hr>
 
-<a href="{% url 'dashboard' %}">- Gráficos -</a>
+  <p>
+    <a href="{% url 'cadastrar_categoria' %}">Cadastrar nova categoria</a>
+    |
+    <a href="{% url 'lista_transacoes' %}">Voltar para a lista</a>
+  </p>
+
+  <script>
+    const chk = document.getElementById("id_recorrente");
+    const grp = document.getElementById("freq-group");
+
+    function toggleFreq() {
+      grp.classList.toggle("hidden", !chk.checked);
+    }
+
+    toggleFreq(); // ao carregar
+    chk.addEventListener("change", toggleFreq); // ao clicar
+  </script>
+
+</body>
+</html>
+

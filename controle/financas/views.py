@@ -23,6 +23,8 @@ def adicionar_transacao(request):
             # salva a transação, associando ao usuário logado
             transacao = form.save(commit = False)
             transacao.usuario = request.user
+            transacao.recorrente = form.cleaned_data['recorrente']
+            transacao.frequencia = form.cleaned_data['frequencia']
             transacao.save()
 
             # tem que ter o nome lista_transacoes lá na urls.pys
@@ -178,7 +180,10 @@ def dashboard(request):
                                 'valores': valores,
                                     'resultado': resultado,
                                         'valores_despesas': valores_despesas,
-                                            'valores_resultado': valores_resultado
+                                            'valores_resultado': valores_resultado,
+
+                                                'gasto': total_despesas,
+                                                    'restante': resultado,
                                                             }
 
     return render(request, 'dashboard.html', context)
