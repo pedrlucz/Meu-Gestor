@@ -2,6 +2,33 @@
 {% block title %}Dashboard – MinhaFinanças{% endblock %}
 
 {% block content %}
+<style>
+    .charts-wrapper {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .chart--line {
+      flex: 2 1 0;
+      min-width: 300px;
+    }
+    .chart--pie {
+      flex: 1 0 auto;
+    }
+    /* Garante responsividade do canvas do line chart */
+    .chart--line canvas {
+      width: 100% !important;
+      height: auto  !important;
+    }
+    /* Limita o tamanho do pie chart */
+    .chart--pie canvas {
+      margin-top: 3rem;
+      margin-left: 10rem;
+      max-width: 200px;
+      max-height: 200px;
+    }
+  </style>
 <div class="max-w-7xl mx-auto p-6 space-y-6">
 
   <!-- cards dos totais -->
@@ -20,9 +47,16 @@
     </div>
   </div>
 
-  <!-- gráfico das linhas -->
-  <div class="bg-gray-800 p-6 rounded-lg shadow">
-    <canvas id="lineChart"></canvas>
+  <div class="charts-wrapper">
+    <!-- gráfico das linhas -->
+    <div class="chart chart--line">
+      <canvas id="lineChart"></canvas>
+    </div>
+
+    <!-- gráfico de pizza -->
+    <div class="chart chart--pie">
+      <canvas id="pieChart" width="200" height="200"></canvas>
+    </div>
   </div>
 
   {# ─── aqui vem os scripts de dados ─── #}
@@ -30,6 +64,8 @@
   {{ valores|json_script:"valores-data" }}
   {{ valores_despesas|json_script:"valores-despesas" }}
   {{ valores_resultado|json_script:"valores-resultado" }}
+  {{ gasto|json_script:"gasto-data" }}
+  {{ restante|json_script:"restante-data" }}
 
 </div>
 {% endblock %}
@@ -42,6 +78,8 @@
   const valores = JSON.parse(document.getElementById('valores-data').textContent);
   const valores_despesas  = JSON.parse(document.getElementById('valores-despesas').textContent);
   const valores_resultado = JSON.parse(document.getElementById('valores-resultado').textContent);
+  const gasto     = JSON.parse(document.getElementById('gasto-data').textContent);
+  const restante  = JSON.parse(document.getElementById('restante-data').textContent);
 
   // inicia Chart.js
   new Chart(
@@ -81,5 +119,33 @@
       }
     }
   );
+
+  // ─── Pie Chart ───
+    new Chart(
+      document.getElementById('pieChart'),
+      {
+        type: 'pie',
+        data: {
+          labels: ['Gasto', 'Restante'],
+          datasets: [{
+            data: [gasto, restante],
+            backgroundColor: [
+              'rgba(248, 113, 113, 0.8)', // vermelho claro
+              'rgba(52, 211, 153, 0.8)'   // verde claro
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      }
+    );
+
 </script>
 {% endblock %}

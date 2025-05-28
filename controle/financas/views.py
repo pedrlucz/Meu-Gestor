@@ -180,7 +180,10 @@ def dashboard(request):
                                 'valores': valores,
                                     'resultado': resultado,
                                         'valores_despesas': valores_despesas,
-                                            'valores_resultado': valores_resultado
+                                            'valores_resultado': valores_resultado,
+
+                                                'gasto': total_despesas,
+                                                    'restante': resultado,
                                                             }
 
     return render(request, 'dashboard.html', context)
