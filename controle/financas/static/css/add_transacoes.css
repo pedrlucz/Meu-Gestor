@@ -107,3 +107,13 @@ p a {
         padding: 15px 20px;
     }
 }
+
+/* espaçamento vertical entre grupos de campo */
+.form-group {
+  margin-bottom: 1.5rem; /* 24px */
+}
+
+/* espaçamento entre o checkbox e o texto */
+.inline-flex > input + span {
+  margin-left: 1rem; /* 16px */
+}
