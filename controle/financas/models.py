@@ -22,5 +22,12 @@ class Transacao(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete = models.SET_NULL, null = True, blank = True)
     data = models.DateTimeField(auto_now_add = True)
 
+    recorrente = models.BooleanField(default=False)
+    frequencia = models.CharField(
+        max_length=20,
+        choices=(('mensal','Mensal'),('semanal','Semanal'),('anual','Anual')),
+        default='mensal'
+    )
+
     def __str__(self):
         return f'{self.get_tipo_display() - {self.descricao}}'
