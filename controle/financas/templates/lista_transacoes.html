@@ -1,4 +1,4 @@
-<h2> Minhas transações </h2>
+<!-- <h2> Minhas transações </h2>
 
 <table border = "1">
     <thread>
@@ -25,4 +25,47 @@
 
 <a href = "{% url 'adicionar_transacao' %}"> - Adicionar Nova Transação - </a>
 
-<a href = "{% url 'dashboard' %}"> - Ver Gráfico - </a>
+<a href = "{% url 'dashboard' %}"> - Ver Gráfico - </a> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    
+    <meta charset="UTF-8">
+    <title>Minhas Transações</title>
+    <link rel="stylesheet" href="{% static 'css/lista_transacoes.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Minhas Transações</h2>
+
+        <table class="tabela-transacoes">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transacao in transacoes %}
+                <tr>
+                    <td>{{ transacao.descricao }}</td>
+                    <td>R$ {{ transacao.valor }}</td>
+                    <td>{{ transacao.data }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="sem-transacoes">Nenhuma transação encontrada</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="botoes">
+            <a href="{% url 'adicionar_transacao' %}" class="btn">+ Adicionar Nova Transação</a>
+            <a href = "{% url 'dashboard' %}">📊 Ver Gráfico</a>
+        </div>
+    </div>
+</body>
+</html>

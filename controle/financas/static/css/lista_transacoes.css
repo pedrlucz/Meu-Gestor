@@ -1,0 +1,202 @@
+:root {
+    --primary-color: #000000;
+    --primary-dark: #000000;
+    --secondary-color: #f6ad55;
+    --light-color: #000000;
+    --dark-color: #000000;
+    --success-color: #48bb78;
+    --danger-color: #f56565;
+    --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #000000 !important; /* Fundo preto sólido */
+    color: var(--dark-color);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: none; /* Removido brilho */
+    text-align: center;
+    transition: var(--transition);
+}
+
+.container:hover {
+    transform: translateY(-2px);
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--secondary-color);
+    border-radius: 2px;
+}
+
+.tabela-transacoes {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 40px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius);
+}
+
+.tabela-transacoes th,
+.tabela-transacoes td {
+    padding: 18px 15px;
+    text-align: left;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.tabela-transacoes th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+}
+
+.tabela-transacoes th:first-child {
+    border-top-left-radius: var(--border-radius);
+}
+
+.tabela-transacoes th:last-child {
+    border-top-right-radius: var(--border-radius);
+}
+
+.tabela-transacoes tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-transacoes tr:nth-child(even) {
+    background-color: rgba(245, 247, 250, 0.5);
+}
+
+.tabela-transacoes tr:hover {
+    background-color: rgba(90, 103, 216, 0.05);
+    transform: translateX(2px);
+    transition: var(--transition);
+}
+
+.sem-transacoes {
+    text-align: center;
+    font-style: italic;
+    color: #718096;
+    padding: 40px;
+    background: rgba(247, 250, 252, 0.7);
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+}
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 14px 28px;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    position: relative; /* Necessário para ::after */
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Efeito de brilho ao passar o mouse */
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 80%
+    );
+    transform: translateX(-100%);
+    transition: 0.6s;
+}
+
+.btn:hover::after {
+    transform: translateX(100%);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 25px;
+    }
+
+    .tabela-transacoes {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .botoes {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Remover reflexo ao selecionar */
+::selection {
+    background: transparent;
+    color: inherit;
+}
